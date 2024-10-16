@@ -10,6 +10,11 @@ import { TextGeometry } from "three/examples/jsm/Addons.js";
 // Debug
 // const gui = new GUI();
 
+// Constants
+let theta = 0;
+const radius = 5;
+const frustumSize = 10;
+
 // Canvas
 const canvas = document.querySelector<HTMLCanvasElement>("canvas.webgl");
 
@@ -19,6 +24,7 @@ if (!canvas) {
 
 // Scene
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xffffff);
 
 /**
  * Textures
@@ -55,11 +61,11 @@ fontLoader.load("fonts/Super Squad_Regular.json", (font) => {
 const matcapTexture = textureLoader.load("/textures/matcaps/8.png");
 const sphereGeometry = new THREE.SphereGeometry(0.05, 32, 32);
 const sphereMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 500; i++) {
   const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-  sphere.position.x = (Math.random() - 0.5) * 15;
-  sphere.position.y = (Math.random() - 0.5) * 15;
-  sphere.position.z = (Math.random() - 0.5) * 15;
+  sphere.position.x = (Math.random() - 0.5) * 20;
+  sphere.position.y = (Math.random() - 0.5) * 20;
+  sphere.position.z = (Math.random() - 0.5) * 20;
   scene.add(sphere);
 }
 
@@ -73,36 +79,44 @@ const sizes = {
 
 window.addEventListener("resize", () => {
   // Update sizes
-  sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
+  const aspect = window.innerWidth / window.innerHeight;
 
-  // Update camera
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
+  camera.left = (-frustumSize * aspect) / 2;
+  camera.right = (frustumSize * aspect) / 2;
+  camera.top = frustumSize / 2;
+  camera.bottom = -frustumSize / 2;
 
   // Update renderer
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
 /**
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(
-  75,
-  sizes.width / sizes.height,
+const aspect = window.innerWidth / window.innerHeight;
+const camera = new THREE.OrthographicCamera(
+  (frustumSize * aspect) / -2,
+  (frustumSize * aspect) / 2,
+  frustumSize / 2,
+  frustumSize / -2,
   0.1,
   100
 );
-camera.position.x = -3;
-camera.position.y = 0.5;
-camera.position.z = 4;
+camera.position.x = radius;
+camera.position.y = 0;
+camera.position.z = radius;
+
 scene.add(camera);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.5;
 
 // light
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -127,10 +141,16 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 const tick = () => {
   // const elapsedTime = clock.getElapsedTime();
+  theta += 0.1;
+
+  // camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
+  // camera.position.y = radius * Math.sin(THREE.MathUtils.degToRad(theta));
+  // camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
 
   // Update controls
   controls.update();
 
+  camera.lookAt(scene.position);
   // Render
   renderer.render(scene, camera);
 
