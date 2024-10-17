@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 // import GUI from "lil-gui";
+import { OrbitControls } from "three/examples/jsm/Addons.js";
 import { TextGeometry } from "three/examples/jsm/Addons.js";
 import GUI from "lil-gui";
 
@@ -66,9 +67,9 @@ const sphereGeometry = new THREE.SphereGeometry(0.05, 32, 32);
 const sphereMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture });
 for (let i = 0; i < 500; i++) {
   const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-  sphere.position.x = (Math.random() - 0.5) * 20;
-  sphere.position.y = (Math.random() - 0.5) * 20;
-  sphere.position.z = (Math.random() - 0.5) * 20;
+  sphere.position.x = (Math.random() - 0.5) * 15;
+  sphere.position.y = (Math.random() - 0.5) * 15;
+  sphere.position.z = (Math.random() - 0.5) * 15;
   scene.add(sphere);
 }
 
@@ -109,20 +110,20 @@ const camera = new THREE.OrthographicCamera(
   0.01,
   100
 );
-camera.position.x = radius;
+camera.position.x = -radius;
 camera.position.y = 0;
 camera.position.z = radius;
 
 scene.add(camera);
 
 // Controls
-// const controls = new OrbitControls(camera, canvas);
-// controls.enableDamping = true;
-// controls.maxPolarAngle = 2;
-// controls.minPolarAngle = 1;
-// controls.maxDistance = 10;
-// controls.maxAzimuthAngle = Math.PI / 10;
-// controls.minAzimuthAngle = -Math.PI / 10;
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.maxPolarAngle = 2;
+controls.minPolarAngle = 1;
+controls.maxDistance = 10;
+controls.maxAzimuthAngle = Math.PI / 10;
+controls.minAzimuthAngle = -Math.PI / 10;
 
 // light
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
@@ -143,31 +144,26 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 /**
  * Animate
  */
-// const clock = new THREE.Clock();
-
 let xDirection = 0.005;
 let yDirection = 0.005;
 const tick = () => {
-  // const elapsedTime = clock.getElapsedTime();
-  // theta += 0.1;
-
   camera.position.x += xDirection;
   camera.position.y += yDirection;
 
-  if (camera.position.x > radius) {
+  if (camera.position.x >= radius) {
     xDirection = -0.005;
-  } else if (camera.position.x < -radius) {
+  } else if (camera.position.x <= -radius) {
     xDirection = 0.005;
   }
 
-  if (camera.position.y > radius) {
+  if (camera.position.y >= radius / 5) {
     yDirection = -0.005;
-  } else if (camera.position.y < -radius) {
+  } else if (camera.position.y <= -radius) {
     yDirection = 0.005;
   }
 
   // Update controls
-  // controls.update();
+  controls.update();
 
   camera.lookAt(scene.position);
   // Render
