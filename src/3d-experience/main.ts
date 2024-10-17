@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 // import GUI from "lil-gui";
 import { TextGeometry } from "three/examples/jsm/Addons.js";
@@ -16,7 +15,6 @@ if (import.meta.env.DEV) {
 }
 
 // Constants
-let theta = 0;
 const radius = 5;
 const frustumSize = 5;
 
