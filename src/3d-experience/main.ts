@@ -3,17 +3,22 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 // import GUI from "lil-gui";
 import { TextGeometry } from "three/examples/jsm/Addons.js";
+import GUI from "lil-gui";
 
 /**
  * Base
  */
 // Debug
-// const gui = new GUI();
+// @ts-ignore
+let gui;
+if (import.meta.env.DEV) {
+  gui = new GUI();
+}
 
 // Constants
 let theta = 0;
 const radius = 5;
-const frustumSize = 10;
+const frustumSize = 5;
 
 // Canvas
 const canvas = document.querySelector<HTMLCanvasElement>("canvas.webgl");
@@ -103,7 +108,7 @@ const camera = new THREE.OrthographicCamera(
   (frustumSize * aspect) / 2,
   frustumSize / 2,
   frustumSize / -2,
-  0.1,
+  0.01,
   100
 );
 camera.position.x = radius;
@@ -113,15 +118,18 @@ camera.position.z = radius;
 scene.add(camera);
 
 // Controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-controls.autoRotate = true;
-controls.autoRotateSpeed = 0.5;
+// const controls = new OrbitControls(camera, canvas);
+// controls.enableDamping = true;
+// controls.maxPolarAngle = 2;
+// controls.minPolarAngle = 1;
+// controls.maxDistance = 10;
+// controls.maxAzimuthAngle = Math.PI / 10;
+// controls.minAzimuthAngle = -Math.PI / 10;
 
 // light
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
 scene.add(ambientLight);
-const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
 directionalLight.position.set(2, 2, 2);
 scene.add(directionalLight);
 
@@ -139,16 +147,29 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
  */
 // const clock = new THREE.Clock();
 
+let xDirection = 0.005;
+let yDirection = 0.005;
 const tick = () => {
   // const elapsedTime = clock.getElapsedTime();
-  theta += 0.1;
+  // theta += 0.1;
 
-  // camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  // camera.position.y = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  // camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
+  camera.position.x += xDirection;
+  camera.position.y += yDirection;
+
+  if (camera.position.x > radius) {
+    xDirection = -0.005;
+  } else if (camera.position.x < -radius) {
+    xDirection = 0.005;
+  }
+
+  if (camera.position.y > radius) {
+    yDirection = -0.005;
+  } else if (camera.position.y < -radius) {
+    yDirection = 0.005;
+  }
 
   // Update controls
-  controls.update();
+  // controls.update();
 
   camera.lookAt(scene.position);
   // Render
