@@ -1,0 +1,99 @@
+.sidepanel-container {
+  height: 100vh;
+}
+
+.sidepanel {
+  height: 100%;
+  width: 300px;
+  padding: 20px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgba(256, 256, 256, 0.9);
+  transition: 0.5s;
+  padding-top: 80px;
+  line-height: 30px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidepanel-container .toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  width: 50px;
+  text-align: center;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.sidepanel h1 {
+  font-size: 24px;
+  margin: 16px 0;
+}
+
+.sidepanel a {
+  color: #555;
+}
+
+.sidepanel.closed {
+  translate: -350px;
+}
+
+.sidepanel.open {
+  translate: 0;
+}
+
+.icons {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* Hide the default browser tooltip */
+.tooltip[title]:hover::after {
+  content: attr(title);
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+  top: 125%;
+  left: 50%;
+  /* transform: translateX(55%); */
+  background-color: #333;
+  color: #fff;
+  text-align: start;
+  padding: 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 1;
+
+  /* Tooltip arrow */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip[title]:hover::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Remove the title attribute so it doesn't show the browser's default tooltip */
+.tooltip[title]:hover::before {
+  content: "";
+  visibility: hidden;
+}
