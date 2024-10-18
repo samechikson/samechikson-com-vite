@@ -5,6 +5,7 @@ import StravaIcon from "../../static/icons/strava-icon.svg";
 import golfIcon from "../../static/icons/golf-icon.svg";
 import resumeIcon from "../../static/icons/resume-icon.svg";
 import linkedinIcon from "../../static/icons/linkedin-icon.svg";
+import behanceIcon from "../../static/icons/behance-icon.svg";
 
 type Props = {};
 function Sidepanel({}: Props) {
@@ -64,6 +65,15 @@ function Sidepanel({}: Props) {
           </a>
           <a target="_blank" href="./Sam_Echikson_resume.pdf" title="Resume">
             <img width={32} src={resumeIcon} alt="Resume Icon" />
+          </a>
+
+          <a
+            target="_blank"
+            href="https://www.behance.net/samechikson"
+            title="Visual portfolio"
+            className="tooltip"
+          >
+            <img width={32} src={behanceIcon} alt="Behance Icon" />
           </a>
         </div>
       </div>
