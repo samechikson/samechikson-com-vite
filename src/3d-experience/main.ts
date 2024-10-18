@@ -112,7 +112,9 @@ const camera = new THREE.OrthographicCamera(
 );
 camera.position.x = -radius;
 camera.position.y = 0;
-camera.position.z = radius;
+camera.position.z = radius * 2;
+camera.zoom = 0.5;
+camera.updateProjectionMatrix();
 
 scene.add(camera);
 
