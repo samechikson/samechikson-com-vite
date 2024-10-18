@@ -113,7 +113,14 @@ const camera = new THREE.OrthographicCamera(
 camera.position.x = -radius;
 camera.position.y = 0;
 camera.position.z = radius * 2;
-camera.zoom = 0.5;
+const zoomBasedOnWidth = THREE.MathUtils.mapLinear(
+  window.innerWidth,
+  300,
+  1920,
+  0.3,
+  1
+);
+camera.zoom = zoomBasedOnWidth;
 camera.updateProjectionMatrix();
 
 scene.add(camera);
