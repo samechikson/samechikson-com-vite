@@ -150,15 +150,14 @@ const tick = () => {
   camera.position.x += xDirection;
   camera.position.y += yDirection;
 
-  if (camera.position.x >= radius) {
-    xDirection = -0.005;
-  } else if (camera.position.x <= -radius) {
+  if (controls.getAzimuthalAngle() <= controls.minAzimuthAngle) {
     xDirection = 0.005;
+  } else if (controls.getAzimuthalAngle() >= controls.maxAzimuthAngle) {
+    xDirection = -0.005;
   }
-
-  if (camera.position.y >= radius / 5) {
+  if (controls.getPolarAngle() <= controls.minPolarAngle) {
     yDirection = -0.005;
-  } else if (camera.position.y <= -radius) {
+  } else if (controls.getPolarAngle() >= controls.maxPolarAngle) {
     yDirection = 0.005;
   }
 
