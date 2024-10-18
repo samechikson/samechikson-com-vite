@@ -18,7 +18,7 @@ function Sidepanel({}: Props) {
       <div className={["sidepanel", isOpen ? "open" : "closed"].join(" ")}>
         <h1>Hello</h1>
         <h3>
-          I'm a creative frontend stack engineer, previously at{" "}
+          I'm a creative frontend engineer, previously at{" "}
           <a target="_blank" href="https://scoopcommute.com">
             Scoop
           </a>{" "}
